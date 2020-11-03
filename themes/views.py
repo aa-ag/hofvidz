@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from .models import Theme, Video
-from .forms import VideoForm
+from .forms import VideoForm, SearchForm
 
 # GENERAL
 def home(request):
@@ -30,6 +30,7 @@ def add_video(request, pk):
     Validates url input from users and adds videos to database
     '''
     form = VideoForm()
+    search_form = SearchForm()
     if request.method == 'POST':
         filled_form = VideoForm(request.POST)
         if filled_form.is_valid():
@@ -39,7 +40,7 @@ def add_video(request, pk):
             video.youtube_id = filled_form.cleaned_data['youtube_id']
             video.theme = Theme.objects.get(pk=pk)
             video.save()
-    context = {'form': form}
+    context = {'form': form, 'search_form': search_form}
     return render(request, 'themes/addvideo.html', context)
 
 
