@@ -4,8 +4,13 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+import secret
 from .models import Theme, Video
 from .forms import VideoForm, SearchForm
+from django.http import Http404
+import urllib
+import requests
+from django.forms.utils import ErrorList
 
 # GENERAL
 def home(request):
@@ -13,6 +18,7 @@ def home(request):
     Renders home page, before and after login/singup
     '''
     return render(request, 'themes/home.html')
+
 
 @login_required
 def dashboard(request):
@@ -31,16 +37,32 @@ def add_video(request, pk):
     '''
     form = VideoForm()
     search_form = SearchForm()
+    theme = Theme.objects.get(pk=pk)
+
+    if not theme.user == request.user:
+        raise Http404
+
     if request.method == 'POST':
-        filled_form = VideoForm(request.POST)
-        if filled_form.is_valid():
+        form = VideoForm(request.POST)
+
+        if form.is_valid():
             video = Video()
-            video.title = filled_form.cleaned_data['title']
-            video.url = filled_form.cleaned_data['url']
-            video.youtube_id = filled_form.cleaned_data['youtube_id']
-            video.theme = Theme.objects.get(pk=pk)
-            video.save()
-    context = {'form': form, 'search_form': search_form}
+            video.theme = theme
+            video.url = form.cleaned_data['url']
+            parsed_url = urllib.parse.urlparse(video.url)
+            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
+            if video_id:
+                video.youtube_id = video_id[0]
+                response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={secret.KEY}').json()
+                title = response['items'][0]['snippet']['title']
+                video.title = title
+                video.save()
+                return redirect('detail_theme', pk)
+            else:
+                errors = form.errors.setdefault('url', ErrorList())
+                errors.append('Needs to be a valid YouTube url')
+
+    context = {'form': form, 'search_form': search_form, 'theme': theme}
     return render(request, 'themes/addvideo.html', context)
 
 
@@ -63,7 +85,7 @@ class SignUp(generic.CreateView):
         login(self.request, user)
         return view
 
-# CRUD OPERATIONS
+# THEMES CRUD OPERATIONS
 class CreateTheme(generic.CreateView):
     '''
     Creates Themes in database
