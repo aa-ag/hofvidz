@@ -4,6 +4,8 @@
 {% if user.is_authenticated %}
 <h3>Edit Theme</h3>
 
+<small>make any changes to the title or description and save the changes whenever you're ready</small>
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
