@@ -1,6 +1,18 @@
 {% extends 'themes/base.html' %}
 {% block content %}
 
-<h3>Dashboard</h3>
+{% if user.is_authenticated %}
+
+{% for theme in themes %}
+    <div class="container">
+        <a href="{% url 'detail_theme' theme.id %}">{{ theme.title }}</a>
+        <small>{{ theme.ago }}</small>
+        {{ theme.description }}
+    </div>
+{% endfor %}
+
+{% else %}
+<h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
+{% endif %}
 
 {% endblock %}

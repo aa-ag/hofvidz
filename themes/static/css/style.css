@@ -4,14 +4,6 @@
   font-family: 'Lora', sans-serif;
 }
 
-.jumbotron {
-  background-color: #EBF4FA;
-}
-
-.jumbotron-heading {
-  font-weight: 300;
-}
-
-.jumbotron .container {
-  max-width: 51rem;
+.container {
+  margin-top: 4vh;
 }

@@ -1,24 +1,30 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from .models import Theme
 
+# GENERAL
 def home(request):
     '''
     Renders home page, before and after login/singup
     '''
     return render(request, 'themes/home.html')
 
-
+@login_required
 def dashboard(request):
     '''
     Renders dashboard page, after login/singup
     '''
-    return render(request, 'themes/dashboard.html')
+    current_user = request.user
+    themes = Theme.objects.filter(user=current_user.id)
+    context = {'themes': themes}
+    return render(request, 'themes/dashboard.html', context)
 
 
+# REGISTRATION
 class SignUp(generic.CreateView):
     '''
     Creates users
@@ -38,7 +44,6 @@ class SignUp(generic.CreateView):
         return view
 
 # CRUD OPERATIONS
-
 class CreateTheme(generic.CreateView):
     '''
     Creates Themes in database

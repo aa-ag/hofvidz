@@ -1,8 +1,14 @@
 {% extends 'themes/base.html' %}
 {% block content %}
 
-<h3>{{ theme.title }}</h3>
+{% if user.is_authenticated %}
+<h3><b>{{ theme.title }}</b></h3>
+<small>{{ theme.ago }}</small>
 <h4 class="text-muted">By {{ theme.user.username }}</h4>
 <h3>{{ theme.description }}</h3>
+
+{% else %}
+<h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
+{% endif %}
 
 {% endblock %}
