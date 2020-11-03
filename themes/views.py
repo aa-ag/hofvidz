@@ -30,6 +30,7 @@ def add_video(request, pk):
     context = {'form': form}
     return render(request, 'themes/addvideo.html', context)
 
+
 # REGISTRATION
 class SignUp(generic.CreateView):
     '''
