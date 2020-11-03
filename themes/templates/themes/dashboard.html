@@ -4,9 +4,11 @@
 {% if user.is_authenticated %}
 
 {% for theme in themes %}
-    <a href="{% url 'detail_theme' theme.id %}">{{ theme.title }}</a>
-    <small>{{ theme.ago }}</small>
-    {{ theme.description }}
+    <div class="container">
+        <a href="{% url 'detail_theme' theme.id %}">{{ theme.title }}</a>
+        <small>{{ theme.ago }}</small>
+        {{ theme.description }}
+    </div>
 {% endfor %}
 
 {% else %}

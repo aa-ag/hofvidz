@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from .models import Theme
+from .forms import VideoForm
 
 # GENERAL
 def home(request):
@@ -23,6 +24,11 @@ def dashboard(request):
     context = {'themes': themes}
     return render(request, 'themes/dashboard.html', context)
 
+
+def add_video(request, pk):
+    form = VideoForm
+    context = {'form': form}
+    return render(request, 'themes/addvideo.html', context)
 
 # REGISTRATION
 class SignUp(generic.CreateView):

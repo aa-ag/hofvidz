@@ -18,4 +18,6 @@ urlpatterns = [
     path('themes/<int:pk>', views.DetailTheme.as_view(), name='detail_theme'),
     path('themes/<int:pk>/update', views.UpdateTheme.as_view(), name='update_theme'),
     path('themes/<int:pk>/delete', views.DeleteTheme.as_view(), name='delete_theme'),
+    # Video view
+    path('themes/<int:pk>/addvideo', views.add_video, name='add_video'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
