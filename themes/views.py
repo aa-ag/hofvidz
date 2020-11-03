@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from .models import Theme
+from .models import Theme, Video
 from .forms import VideoForm
 
 # GENERAL
@@ -26,7 +26,19 @@ def dashboard(request):
 
 
 def add_video(request, pk):
-    form = VideoForm
+    '''
+    Validates url input from users and adds videos to database
+    '''
+    form = VideoForm()
+    if request.method == 'POST':
+        filled_form = VideoForm(request.POST)
+        if filled_form.is_valid():
+            video = Video()
+            video.title = filled_form.cleaned_data['title']
+            video.url = filled_form.cleaned_data['url']
+            video.youtube_id = filled_form.cleaned_data['youtube_id']
+            video.theme = Theme.objects.get(pk=pk)
+            video.save()
     context = {'form': form}
     return render(request, 'themes/addvideo.html', context)
 
