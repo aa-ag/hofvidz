@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255)),
                 ('url', models.URLField()),
                 ('youtube_id', models.CharField(max_length=255)),
-                ('theme', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='halls.theme')),
+                ('theme', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='themes.theme')),
             ],
         ),
     ]
