@@ -20,19 +20,29 @@ def dashboard(request):
 
 
 class SignUp(generic.CreateView):
+    '''
+    Creates users
+    '''
     form_class = UserCreationForm
     success_url = reverse_lazy('home')
     template_name = 'registration/signup.html'
 
     def form_valid(self, form):
+        '''
+        Logs in users right after sign up
+        '''
         view = super(SignUp, self).form_valid(form)
         username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return view
 
+# CRUD OPERATIONS
 
 class CreateTheme(generic.CreateView):
+    '''
+    Creates Themes in database
+    '''
     model = Theme
     fields = ['title', 'description']
     template_name = 'themes/create_theme.html'
@@ -45,11 +55,17 @@ class CreateTheme(generic.CreateView):
 
 
 class DetailTheme(generic.DetailView):
+    '''
+    Reads Themes in database
+    '''
     model = Theme
     template_name = 'themes/detail_theme.html'
 
 
 class UpdateTheme(generic.UpdateView):
+    '''
+    Updates Themes in database
+    '''
     model = Theme
     template_name = 'themes/update_theme.html'
     fields = ['title', 'description']
@@ -57,6 +73,9 @@ class UpdateTheme(generic.UpdateView):
 
 
 class DeleteTheme(generic.DeleteView):
+    '''
+    Deletes Themes in database
+    '''
     model = Theme
     template_name = 'themes/delete_theme.html'
     success_url = reverse_lazy('dashboard')
