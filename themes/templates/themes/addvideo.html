@@ -2,8 +2,9 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<h3>Add a video</h3>
-<form method="POST">
+<h3>Add a video to <b>{{ theme.title }}</b></h3>
+
+    <form method="POST">
     {% csrf_token %}
     {% load widget_tweaks %}
 
@@ -14,16 +15,28 @@
         {% render_field field class="form-control" %}
     </div>
     {% endfor %}
-    <button type="submit" class="btn btn-primary">create</button>
-</form>
+    </form>
 
-<p>OR</p>
+    <p>OR</p>
 
-<form>
-    {{ search_form }}
-</form>
+    <form>
+    {% for field in search_form %}
+    <div class="form-group">
+        {{ field.errors}}
+        {{ field.label_tag}}
+        {% render_field field class="form-control" %}
+    </div>
+    {% endfor %}
+    </form>
+
+    <button type="submit" class="btn btn-primary">add</button>
+
 {% else %}
 <h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
 {% endif %}
+
+<div id="results">
+
+</div>
 
 {% endblock %}
