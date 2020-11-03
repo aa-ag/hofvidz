@@ -7,9 +7,16 @@ from .models import Theme
 
 def home(request):
     '''
-    Renders home page, before login/singup
+    Renders home page, before and after login/singup
     '''
     return render(request, 'themes/home.html')
+
+
+def dashboard(request):
+    '''
+    Renders dashboard page, after login/singup
+    '''
+    return render(request, 'themes/dashboard.html')
 
 
 class SignUp(generic.CreateView):
@@ -35,3 +42,7 @@ class CreateTheme(generic.CreateView):
         form.instance.user = self.request.user
         super(CreateTheme, self).form_valid(form)
         return redirect('home')
+
+class DetailTheme(generic.DetailView):
+    model = Theme
+    template_name = 'themes/detail_theme.html'
