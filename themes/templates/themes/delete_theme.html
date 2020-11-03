@@ -2,12 +2,18 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<h3>Create a Theme</h3>
+<h3>Are you sure you want to delete this theme</h3>
+<small>THIS ACTION IS PERMANENT</small>
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">create</button>
+    <button type="submit" class="btn btn-danger">delete forever</button>
 </form>
+
+<br>
+
+<h2><a href="{% url 'detail_theme' theme.id %}">{{ theme.title }}</a></h2>
 {% else %}
 <h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
 {% endif %}

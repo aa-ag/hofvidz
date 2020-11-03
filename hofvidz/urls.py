@@ -16,6 +16,6 @@ urlpatterns = [
     # Theme view
     path('themes/create_theme', views.CreateTheme.as_view(), name='create_theme'),
     path('themes/<int:pk>', views.DetailTheme.as_view(), name='detail_theme'),
-    # path('themes/<int:pk>/update', views.UpdateTheme.as_view(), name='update_theme'),
-    # path('themes/<int:pk>/delete', views.DeleteTheme.as_view(), name='delete_theme'),
+    path('themes/<int:pk>/update', views.UpdateTheme.as_view(), name='update_theme'),
+    path('themes/<int:pk>/delete', views.DeleteTheme.as_view(), name='delete_theme'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

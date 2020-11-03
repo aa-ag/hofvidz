@@ -36,13 +36,27 @@ class CreateTheme(generic.CreateView):
     model = Theme
     fields = ['title', 'description']
     template_name = 'themes/create_theme.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         super(CreateTheme, self).form_valid(form)
         return redirect('home')
 
+
 class DetailTheme(generic.DetailView):
     model = Theme
     template_name = 'themes/detail_theme.html'
+
+
+class UpdateTheme(generic.UpdateView):
+    model = Theme
+    template_name = 'themes/update_theme.html'
+    fields = ['title', 'description']
+    success_url = reverse_lazy('dashboard')
+
+
+class DeleteTheme(generic.DeleteView):
+    model = Theme
+    template_name = 'themes/delete_theme.html'
+    success_url = reverse_lazy('dashboard')

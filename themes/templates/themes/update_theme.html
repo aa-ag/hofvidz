@@ -2,14 +2,17 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<h3>Create a Theme</h3>
+<h3>Edit Theme</h3>
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">create</button>
+    <button type="submit" class="btn btn-primary">save changes</button>
 </form>
 {% else %}
 <h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
 {% endif %}
+
+<a href="{% url 'delete_theme' theme.id %}" class="btn btn-danger">delete theme</a>
 
 {% endblock %}
