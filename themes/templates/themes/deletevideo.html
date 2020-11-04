@@ -1,0 +1,14 @@
+{% extends 'themes/base.html' %}
+{% block content %}
+
+<h3>Are you sure you want to delete this video?</h3>
+<small>THIS ACTION IS PERMANENT</small>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ video.title }}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-danger">delete forever</button>
+</form>
+
+{% endblock %}

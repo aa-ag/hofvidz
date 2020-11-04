@@ -30,6 +30,7 @@ def dashboard(request):
     context = {'themes': themes}
     return render(request, 'themes/dashboard.html', context)
 
+# VIDEO CRUD OPERATIONS
 
 def add_video(request, pk):
     '''
@@ -75,6 +76,15 @@ def video_search(request):
     return JsonResponse({'error': 'something went wrong... please try again'})
 
 
+class DeleteVideo(generic.DeleteView):
+    '''
+    Deletes Videos from database
+    '''
+    model = Video
+    template_name = 'themes/deletevideo.html'
+    success_url = reverse_lazy('dashboard')
+
+
 # REGISTRATION
 class SignUp(generic.CreateView):
     '''
@@ -93,6 +103,7 @@ class SignUp(generic.CreateView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return view
+
 
 # THEMES CRUD OPERATIONS
 class CreateTheme(generic.CreateView):
