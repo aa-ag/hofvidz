@@ -1,7 +1,6 @@
 {% extends 'themes/base.html' %}
 {% block content %}
 
-{% if user.is_authenticated %}
 <h3>Add a video to <b>{{ theme.title }}</b></h3>
 
     <form method="POST">
@@ -31,12 +30,14 @@
 
     <button type="submit" class="btn btn-primary">add</button>
 
-{% else %}
-<h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
-{% endif %}
+    <div id="results"></div>
+    <script>
+    var delayTimer;
 
-<div id="results">
-
-</div>
+    $('#id_search_term').keyup(function() {
+        clearTimeout(delayTimer);
+        $('#results').text('Looking...');
+    });
+    </script>
 
 {% endblock %}
