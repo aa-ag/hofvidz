@@ -5,6 +5,7 @@
 <small>THIS ACTION IS PERMANENT</small>
 
 <form method="POST">
+    {% load widget_tweaks %}
     {% csrf_token %}
     {{ form.as_p }}
 

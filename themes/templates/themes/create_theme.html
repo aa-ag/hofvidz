@@ -5,11 +5,19 @@
 <h3>Create a Theme</h3>
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% load widget_tweaks %}
+    {% for field in form %}
+        <div class="form-group {% if field.errors %} alert alert-danger {% endif %}">
+            {{ field.errors}}
+            {{ field.label_tag}}
+            {% render_field field class="form-control" %}
+        </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">create</button>
 </form>
 {% else %}
 <h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
 {% endif %}
+
 
 {% endblock %}

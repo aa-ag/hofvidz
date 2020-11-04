@@ -91,7 +91,7 @@ class SignUp(generic.CreateView):
     Creates users
     '''
     form_class = UserCreationForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
     template_name = 'registration/signup.html'
 
     def form_valid(self, form):
@@ -118,7 +118,7 @@ class CreateTheme(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         super(CreateTheme, self).form_valid(form)
-        return redirect('home')
+        return redirect('dashboard')
 
 
 class DetailTheme(generic.DetailView):
