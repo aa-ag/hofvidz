@@ -3,16 +3,37 @@
 
 {% if user.is_authenticated %}
 
-{% for theme in themes %}
-    <div class="container">
-        <a href="{% url 'detail_theme' theme.id %}">{{ theme.title }}</a>
-        <small>{{ theme.ago }}</small>
-        {{ theme.description }}
+<div class="text-center">
+    <h3>{{ user.username }}'s Dashboard</h3>
+    <a href="{% url 'create_theme' %}" class="btn btn-secondary">Create new theme</a>
+</div>
+
+    {% for theme in themes %}
+
+    <h2><a href="{% url 'detail_theme' theme.id %}" >{{ theme.title }}</a></h2>
+    <a href="{% url 'addvideo' theme.id %}" class="btn btn-primary">Add</a>
+    <a href="{% url 'update_theme' theme.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'delete_theme' theme.id %}" class="btn btn-danger">Delete</a>
+
+    <div class="row">
+        {% for video in theme.video_set.all %}
+            <div class="col-md-4 mt-3">
+                <div class="card-mb-4 shadow-sm">
+                    <iframe width="100%" height="100%" 
+                    src="https://www.youtube.com/embed/{{ video.youtube_id }}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+                    <div class="card-body"><p class="card-text">{{ video.title }}</p></div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
+    <hr>
+    {% endfor %}
 
 {% else %}
-<h3>Please <a href="{% url 'login' %}">log in</a> first!</h3>
+    <h3>Please <a href="{% url 'login' %}" class="btn btn-primary">log in</a> first!</h3>
 {% endif %}
 
 {% endblock %}

@@ -30,7 +30,7 @@ def dashboard(request):
     context = {'themes': themes}
     return render(request, 'themes/dashboard.html', context)
 
-# VIDEO CRUD OPERATIONS
+# VIDEO CRUD
 
 def add_video(request, pk):
     '''
