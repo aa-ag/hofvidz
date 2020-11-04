@@ -3,7 +3,7 @@
 
 <h3>Add a video to <b>{{ theme.title }}</b></h3>
 
-    <form method="POST">
+    <form method="POST" id="addvideo">
     {% csrf_token %}
     {% load widget_tweaks %}
 
@@ -14,6 +14,8 @@
         {% render_field field class="form-control" %}
     </div>
     {% endfor %}
+
+    <button type="submit" class="btn btn-primary">add</button>
     </form>
 
     <p>OR</p>
@@ -28,16 +30,46 @@
     {% endfor %}
     </form>
 
-    <button type="submit" class="btn btn-primary">add</button>
-
     <div id="results"></div>
+
     <script>
-    var delayTimer;
+    let delayTimer;
 
     $('#id_search_term').keyup(function() {
         clearTimeout(delayTimer);
         $('#results').text('Looking...');
+        delayTimer = setTimeout(function() {
+            let text = $('#id_search_term').val();
+            $.ajax({
+                url: '/video/search',
+                data: {
+                    'search_term': text
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let results = '';
+                    $('#results').text('');
+                    results += '<div class="row">';
+                    data['items'].forEach(function(video) {
+                        results += '<div class="col-md-4 mt-3"><div class="card mb-4 shadow-sm">';
+                        results += '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/' 
+                        + video['id']['videoId'] 
+                        + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                        results += '<div class="card-body"><p class="card-text">' + video['snippet']['title'] + '</p>';
+                        results += '<a href=# class="btn btn-primary" onclick="addVideo(\'' + video['id']['videoId'] + '\')">Add to Theme</a>';
+                        results += '</div></div></div>';
+                    });
+                    results += '</div>';
+                    $('#results').append(results);
+                }
+            });
+        }, 1000)
     });
+
+    function addVideo(video_id) {
+        $('#id_url').val('https://www.youtube.com/watch?v=' + video_id);
+        $('#addvideo').submit();
+    }
     </script>
 
 {% endblock %}

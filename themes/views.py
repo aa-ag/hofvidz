@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 import secret
 from .models import Theme, Video
 from .forms import VideoForm, SearchForm
-from django.http import Http404
+from django.http import Http404, JsonResponse
 import urllib
 import requests
 from django.forms.utils import ErrorList
@@ -64,6 +64,15 @@ def add_video(request, pk):
 
     context = {'form': form, 'search_form': search_form, 'theme': theme}
     return render(request, 'themes/addvideo.html', context)
+
+
+def video_search(request):
+    search_form = SearchForm(request.GET)
+    if search_form.is_valid():
+        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search_term'])
+        response = requests.get(f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={encoded_search_term}&key={secret.KEY}').json()
+        return JsonResponse(response)
+    return JsonResponse({'error': 'something went wrong... please try again'})
 
 
 # REGISTRATION
