@@ -17,7 +17,9 @@ def home(request):
     '''
     Renders home page, before and after login/singup
     '''
-    return render(request, 'themes/home.html')
+    recent_themes = Theme.objects.all().order_by('-id')[:3]
+    context = {'recent_themes': recent_themes}
+    return render(request, 'themes/home.html', context)
 
 
 @login_required
