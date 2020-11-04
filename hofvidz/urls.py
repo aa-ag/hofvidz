@@ -20,6 +20,6 @@ urlpatterns = [
     path('themes/<int:pk>/delete', views.DeleteTheme.as_view(), name='delete_theme'),
     # Video views
     path('themes/<int:pk>/addvideo', views.add_video, name='add_video'),
-    path('themes/<str:theme>/<int:pk>/deletevideo', views.DeleteVideo.as_view(), name='deletevideo'),
+    path('video/<int:pk>/deletevideo', views.DeleteVideo.as_view(), name='deletevideo'),
     path('video/search', views.video_search, name='video_search'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
