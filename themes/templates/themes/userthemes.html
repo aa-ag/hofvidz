@@ -1,16 +1,34 @@
 {% extends 'themes/base.html' %}
 {% block content %}
 
-<!-- <h3>All themes by <b>{{ user }}</b></h3>
-
 {% for theme in themes.all %}
-    <div id="themerow">
 
+    <h3>All themes by <b>{{ theme.user }}</b></h3>
+    <div id="themerow">
         <div>
             {{ theme.title }}
             {{ theme.ago }}
+            <div class="row">
+                {% for video in theme.video_set.all %}
+                    <div class="col-md-4 mt-3">
+                        <div class="card-mb-4 shadow-sm" id="videobox">
+                            <iframe width="100%" height="100%" 
+                            src="https://www.youtube.com/embed/{{ video.youtube_id }}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                            <div class="card-body">
+                                <p class="card-text">{{ video.title }}</p>
+                                {% if user.id == theme.user.id %}
+                                    <a href="{% url 'deletevideo' video.id %}" class="btn btn-danger">Delete</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-{% endfor %} -->
+{% endfor %}
 
 {% endblock %}

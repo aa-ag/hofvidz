@@ -34,15 +34,14 @@ def dashboard(request):
     return render(request, 'themes/dashboard.html', context)
 
 
-# @login_required
-# def userthemes(request, fk):
-#     '''
-#     Renders user profile view
-#     '''
-#     themes = Theme.objects.filter(id=fk)
-#     user = User.objects.get(pk=fk)
-#     context = {'user': user, 'themes': themes}
-#     return render(request, 'themes/userthemes.html', context)
+@login_required
+def userthemes(request, fk):
+    '''
+    Renders user profile view
+    '''
+    themes = Theme.objects.filter(id=fk)
+    context = {'themes': themes}
+    return render(request, 'themes/userthemes.html', context)
 
 
 # REGISTRATION
@@ -159,6 +158,9 @@ def add_video(request, pk):
 
 @login_required
 def video_search(request):
+    '''
+    Accepts user input, searches YouTube & returns results
+    '''
     search_form = SearchForm(request.GET)
     if search_form.is_valid():
         encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search_term'])
