@@ -36,3 +36,11 @@ body {
 iframe, #videobox {
   border-radius: 6px;
 }
+
+#login, #signup, #createthemeform {
+  padding: 40px 20px 40px 20px;
+  border-radius: 6px;
+  color: #141414;
+  max-width: 420px;
+  background-color: rgba(0, 0, 0, 0.123);
+}
