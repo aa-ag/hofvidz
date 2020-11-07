@@ -34,6 +34,17 @@ def dashboard(request):
     return render(request, 'themes/dashboard.html', context)
 
 
+# @login_required
+# def userthemes(request, fk):
+#     '''
+#     Renders user profile view
+#     '''
+#     themes = Theme.objects.filter(id=fk)
+#     user = User.objects.get(pk=fk)
+#     context = {'user': user, 'themes': themes}
+#     return render(request, 'themes/userthemes.html', context)
+
+
 # REGISTRATION
 class SignUp(generic.CreateView):
     '''
