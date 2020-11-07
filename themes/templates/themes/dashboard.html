@@ -11,9 +11,9 @@
     {% for theme in themes %}
     <div id="themerow">
 
-        <h2><a href="{% url 'detail_theme' theme.id %}" class="btn btn-primary btn-lg">{{ theme.title }}</a></h2>
-        <small class="text-muted">{{ theme.ago }}</small><br>
+        <h2><a href="{% url 'detail_theme' theme.id %}" class="btn btn-dark btn-lg btn-block text-left">{{ theme.title }} <small class="text-muted">{{ theme.ago }}</small></a></h2>
         <p>{{ theme.description }}</p>
+        <hr>
         {% if user.id == theme.user.id %}
             <a href="{% url 'addvideo' theme.id %}" class="btn btn-secondary">Add</a>
             <a href="{% url 'update_theme' theme.id %}" class="btn btn-secondary">Edit</a>

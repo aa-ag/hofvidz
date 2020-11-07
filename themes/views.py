@@ -34,68 +34,6 @@ def dashboard(request):
     return render(request, 'themes/dashboard.html', context)
 
 
-# VIDEO CRUD
-@login_required
-def add_video(request, pk):
-    '''
-    Validates url input from users and adds videos to database
-    '''
-    form = VideoForm()
-    search_form = SearchForm()
-    theme = Theme.objects.get(pk=pk)
-
-    if not theme.user == request.user:
-        raise Http404
-
-    if request.method == 'POST':
-        form = VideoForm(request.POST)
-
-        if form.is_valid():
-            video = Video()
-            video.theme = theme
-            video.url = form.cleaned_data['url']
-            parsed_url = urllib.parse.urlparse(video.url)
-            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
-            if video_id:
-                video.youtube_id = video_id[0]
-                response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={secret.KEY}').json()
-                title = response['items'][0]['snippet']['title']
-                video.title = title
-                video.save()
-                return redirect('detail_theme', pk)
-            else:
-                errors = form.errors.setdefault('url', ErrorList())
-                errors.append('Needs to be a valid YouTube url')
-
-    context = {'form': form, 'search_form': search_form, 'theme': theme}
-    return render(request, 'themes/addvideo.html', context)
-
-
-@login_required
-def video_search(request):
-    search_form = SearchForm(request.GET)
-    if search_form.is_valid():
-        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search_term'])
-        response = requests.get(f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={encoded_search_term}&key={secret.KEY}').json()
-        return JsonResponse(response)
-    return JsonResponse({'error': 'something went wrong... please try again'})
-
-
-class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
-    '''
-    Deletes Videos from database
-    '''
-    model = Video
-    template_name = 'themes/deletevideo.html'
-    success_url = reverse_lazy('dashboard')
-
-    def get_object(self):
-        video = super(DeleteVideo, self).get_object()
-        if not video.theme.user == self.request.user:
-            raise Http404
-        return video
-
-
 # REGISTRATION
 class SignUp(generic.CreateView):
     '''
@@ -169,3 +107,65 @@ class DeleteTheme(LoginRequiredMixin, generic.DeleteView):
         if not theme.user == self.request.user:
             raise Http404
         return theme
+
+
+# VIDEO CRUD
+@login_required
+def add_video(request, pk):
+    '''
+    Validates url input from users and adds videos to database
+    '''
+    form = VideoForm()
+    search_form = SearchForm()
+    theme = Theme.objects.get(pk=pk)
+
+    if not theme.user == request.user:
+        raise Http404
+
+    if request.method == 'POST':
+        form = VideoForm(request.POST)
+
+        if form.is_valid():
+            video = Video()
+            video.theme = theme
+            video.url = form.cleaned_data['url']
+            parsed_url = urllib.parse.urlparse(video.url)
+            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
+            if video_id:
+                video.youtube_id = video_id[0]
+                response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id[0]}&key={secret.KEY}').json()
+                title = response['items'][0]['snippet']['title']
+                video.title = title
+                video.save()
+                return redirect('detail_theme', pk)
+            else:
+                errors = form.errors.setdefault('url', ErrorList())
+                errors.append('Needs to be a valid YouTube url')
+
+    context = {'form': form, 'search_form': search_form, 'theme': theme}
+    return render(request, 'themes/addvideo.html', context)
+
+
+@login_required
+def video_search(request):
+    search_form = SearchForm(request.GET)
+    if search_form.is_valid():
+        encoded_search_term = urllib.parse.quote(search_form.cleaned_data['search_term'])
+        response = requests.get(f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q={encoded_search_term}&key={secret.KEY}').json()
+        return JsonResponse(response)
+    return JsonResponse({'error': 'something went wrong... please try again'})
+
+
+class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
+    '''
+    Deletes Videos from database
+    '''
+    model = Video
+    template_name = 'themes/deletevideo.html'
+    success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        video = super(DeleteVideo, self).get_object()
+        if not video.theme.user == self.request.user:
+            raise Http404
+        return video
