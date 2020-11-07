@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 import secret
@@ -32,8 +33,9 @@ def dashboard(request):
     context = {'themes': themes}
     return render(request, 'themes/dashboard.html', context)
 
-# VIDEO CRUD
 
+# VIDEO CRUD
+@login_required
 def add_video(request, pk):
     '''
     Validates url input from users and adds videos to database
@@ -69,6 +71,7 @@ def add_video(request, pk):
     return render(request, 'themes/addvideo.html', context)
 
 
+@login_required
 def video_search(request):
     search_form = SearchForm(request.GET)
     if search_form.is_valid():
@@ -78,13 +81,19 @@ def video_search(request):
     return JsonResponse({'error': 'something went wrong... please try again'})
 
 
-class DeleteVideo(generic.DeleteView):
+class DeleteVideo(LoginRequiredMixin, generic.DeleteView):
     '''
     Deletes Videos from database
     '''
     model = Video
     template_name = 'themes/deletevideo.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        video = super(DeleteVideo, self).get_object()
+        if not video.theme.user == self.request.user:
+            raise Http404
+        return video
 
 
 # REGISTRATION
@@ -108,7 +117,7 @@ class SignUp(generic.CreateView):
 
 
 # THEMES CRUD OPERATIONS
-class CreateTheme(generic.CreateView):
+class CreateTheme(LoginRequiredMixin, generic.CreateView):
     '''
     Creates Themes in database
     '''
@@ -131,7 +140,7 @@ class DetailTheme(generic.DetailView):
     template_name = 'themes/detail_theme.html'
 
 
-class UpdateTheme(generic.UpdateView):
+class UpdateTheme(LoginRequiredMixin, generic.UpdateView):
     '''
     Updates Themes in database
     '''
@@ -140,11 +149,23 @@ class UpdateTheme(generic.UpdateView):
     fields = ['title', 'description']
     success_url = reverse_lazy('dashboard')
 
+    def get_object(self):
+        theme = super(UpdateTheme, self).get_object()
+        if not theme.user == self.request.user:
+            raise Http404
+        return theme
 
-class DeleteTheme(generic.DeleteView):
+
+class DeleteTheme(LoginRequiredMixin, generic.DeleteView):
     '''
     Deletes Themes in database
     '''
     model = Theme
     template_name = 'themes/delete_theme.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        theme = super(DeleteVideo, self).get_object()
+        if not theme.user == self.request.user:
+            raise Http404
+        return theme

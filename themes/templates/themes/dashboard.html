@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
 
     <div class="text-center" id="usersdashboard">
-        <h3>{{ user.username }}'s Dashboard</h3>
+        <h3>Here's your dashboard, <b>{{ user.username }}</b>!</h3>
         <a href="{% url 'create_theme' %}" class="btn btn-light">Create new theme</a>
     </div>
 
