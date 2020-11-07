@@ -4,6 +4,10 @@
   font-family: 'Lora', sans-serif;
 }
 
+.jumbotron {
+  border-radius: 6px;
+}
+
 body {
   background-color: rgb(234, 234, 234);
 }
