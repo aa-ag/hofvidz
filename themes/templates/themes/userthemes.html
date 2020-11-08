@@ -7,7 +7,7 @@
     <div id="themerow">
         <div>
             {{ theme.title }}
-            {{ theme.ago }}
+            <small class="text-muted">{{ theme.ago }}</small>
             <div class="row">
                 {% for video in theme.video_set.all %}
                     <div class="col-md-4 mt-3">
