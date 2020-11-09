@@ -35,11 +35,11 @@ def dashboard(request):
 
 
 @login_required
-def userthemes(request, fk):
+def userthemes(request, id):
     '''
     Renders user profile view
     '''
-    themes = Theme.objects.filter(id=fk)
+    themes = Theme.objects.filter(id=id)
     context = {'themes': themes}
     return render(request, 'themes/userthemes.html', context)
 

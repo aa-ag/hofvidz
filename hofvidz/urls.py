@@ -18,7 +18,7 @@ urlpatterns = [
     path('themes/<int:pk>', views.DetailTheme.as_view(), name='detail_theme'),
     path('themes/<int:pk>/update', views.UpdateTheme.as_view(), name='update_theme'),
     path('themes/<int:pk>/delete', views.DeleteTheme.as_view(), name='delete_theme'),
-    path('user/<int:fk>', views.userthemes, name='userthemes'),
+    path('user/<int:id>', views.userthemes, name='userthemes'),
     # Video views
     path('themes/<int:pk>/addvideo', views.add_video, name='addvideo'),
     path('video/<int:pk>/deletevideo', views.DeleteVideo.as_view(), name='deletevideo'),

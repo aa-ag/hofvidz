@@ -5,8 +5,8 @@
 
     <div class="container" id="themeinfo">
         <h3 class="btn btn-dark btn-lg btn-block text-left"><b>{{ theme.title }}</b></h3>
-        <small>{{ theme.ago }}</small>
-        <h4 class="text-muted">By {{ theme.user.username }}</h4>
+        <h4>By {{ theme.user.username }}</h4>
+        <small class="text-muted">{{ theme.ago }}</small>
         <h3>{{ theme.description }}</h3>
 
             {% if user.id == theme.user.id %}
