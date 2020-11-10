@@ -10,7 +10,7 @@
 </section>
 
 <div class="container" id="recentthemesbox">
-    <h1 class="text-center">Most recent Themes</h1>
+    <h1 class="text-center text-dark">Most recent Themes</h1>
 
     {% for theme in recent_themes %}
         <a href="{% url 'detail_theme' theme.id %}"><h2>{{ theme.title }}</h2></a>

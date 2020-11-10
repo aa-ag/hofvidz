@@ -1,12 +1,12 @@
 {% extends 'themes/base.html' %}
 {% block content %}
 
-{% for theme in themes %}
+{% for video in themes %}
 
     <h3>All themes by <b>{{ theme.user }}</b></h3>
     <div id="themerow">
         <div>
-            {{ theme.title }}
+            {{ video.title }}
             <small class="text-muted">{{ theme.ago }}</small>
             <div class="row">
                 {% for video in theme.video_set.all %}
