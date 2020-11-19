@@ -4,30 +4,31 @@
 <h3>Add a video to <b>{{ theme.title }}</b></h3>
 
     <form method="POST" id="addvideo">
-    {% csrf_token %}
-    {% load widget_tweaks %}
+        {% csrf_token %}
+        {% load widget_tweaks %}
 
-    {% for field in form %}
-    <div class="form-group {% if field.errors %} alert alert-danger {% endif %}">
-        {{ field.errors}}
-        {{ field.label_tag}}
-        {% render_field field class="form-control" %}
-    </div>
-    {% endfor %}
-
-    <button type="submit" class="btn btn-primary">add</button>
+        {% for field in form %}
+        <div class="form-group {% if field.errors %} alert alert-danger {% endif %}">
+            {{ field.errors}}
+            {{ field.label_tag}}
+            {% render_field field class="form-control" %}
+        </div>
+        {% endfor %}
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <div class="g-recaptcha" data-sitekey="6LdF6eQZAAAAAHtsbEXysLTb2AhUcZV3NOelhQgR"></div>
+        <button type="submit" class="btn btn-primary">add</button>
     </form>
 
     <p>OR</p>
 
     <form>
-    {% for field in search_form %}
-    <div class="form-group">
-        {{ field.errors}}
-        {{ field.label_tag}}
-        {% render_field field class="form-control" %}
-    </div>
-    {% endfor %}
+        {% for field in search_form %}
+        <div class="form-group">
+            {{ field.errors}}
+            {{ field.label_tag}}
+            {% render_field field class="form-control" %}
+        </div>
+        {% endfor %}
     </form>
 
     <div id="results"></div>
