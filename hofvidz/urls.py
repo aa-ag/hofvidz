@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 from themes import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -23,4 +23,6 @@ urlpatterns = [
     path('themes/<int:pk>/addvideo', views.add_video, name='addvideo'),
     path('video/<int:pk>/deletevideo', views.DeleteVideo.as_view(), name='deletevideo'),
     path('video/search', views.video_search, name='video_search'),
+    # Captcha
+    path('captcha', include('captcha.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

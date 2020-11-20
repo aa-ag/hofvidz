@@ -11,14 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'aq^=!d(7zdtufz@q_z^cugvfg(2f+_4f&=vz++8vbgoq34k_9!'
 
-# CAPTCHA KEYS
-RECAPTCHA_PUBLIC_KEY = secret.SITE_KEY
-RECAPTCHA_PRIVATE_KEY = secret.S_KEY
-
-RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000', }
-
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
